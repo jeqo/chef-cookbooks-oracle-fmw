@@ -1,10 +1,7 @@
-Generated at 2014-03-24 19:41:13 -0500
-NameError: No resource, method, or local variable named `soa_directory' for `Chef::Recipe "install-soa-11.1.1.7"'
-C:/devops/opscode/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.10.4-x86-mingw32/lib/chef/dsl/recipe.rb:49:in `rescue in method_missing'
-C:/devops/opscode/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.10.4-x86-mingw32/lib/chef/dsl/recipe.rb:44:in `method_missing'
-c:/dev/cookbooks/oracle-soa-suite/recipes/install-soa-11.1.1.7.rb:3:in `block in from_file'
-c:/dev/cookbooks/oracle-soa-suite/recipes/install-soa-11.1.1.7.rb:3:in `each'
-c:/dev/cookbooks/oracle-soa-suite/recipes/install-soa-11.1.1.7.rb:3:in `from_file'
+Generated at 2014-03-25 23:31:24 -0500
+NoMethodError: Undefined node attribute or method `+' on `node'. To set an attribute, use `+=value' instead.
+C:/devops/opscode/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.10.4-x86-mingw32/lib/chef/node/attribute_collections.rb:170:in `method_missing'
+c:/dev/cookbooks/oracle-soa-suite/recipes/install-soa-11.1.1.7.rb:1:in `from_file'
 C:/devops/opscode/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.10.4-x86-mingw32/lib/chef/mixin/from_file.rb:30:in `instance_eval'
 C:/devops/opscode/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.10.4-x86-mingw32/lib/chef/mixin/from_file.rb:30:in `from_file'
 C:/devops/opscode/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.10.4-x86-mingw32/lib/chef/cookbook_version.rb:237:in `load_recipe'

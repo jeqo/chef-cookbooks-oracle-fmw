@@ -1,0 +1,1 @@
+chef-solo -c solo.rb -j node_soabpm.json
