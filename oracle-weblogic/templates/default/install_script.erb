@@ -1,0 +1,15 @@
+rem Execute the installer in silent mode
+@echo off
+<%= @wls_install_command %> -mode=silent -silent_xml=<%= @response_file %> -log=<%= @log_file %>
+@rem Return an exit code to indicate success or failure of installation
+set exit_code=%ERRORLEVEL%
+
+@echo.
+@echo Exitcode=%exit_code%
+@echo.
+@echo Exit Code Key
+@echo ---------------
+@echo  0=Installation completed successfully
+@echo -1=Installation failed due to a fatal error
+@echo -2=Installation failed due to an internal XML parsing error
+@echo.
