@@ -53,6 +53,7 @@ run_command = node["soa_installation"]["soa_tmp_dir"] + "/Disk1/install/win64/se
 
 execute run_command do
 	action :run
+	returns [0, 259]
 	not_if do 
 		FileTest.directory?(node["soa_installation"]["oracle_soa_home"]) 
 	end

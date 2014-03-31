@@ -1,0 +1,79 @@
+WLHOME='<%= @weblogic_home %>'
+DOMAIN_PATH='<%= @domain_directory %>/<%= @domain_name %>'
+DOMAIN='<%= @domain_name %>'
+APP_PATH='<%= @app_directory %>/<%= @domain_name %>'
+DEVELOPMENT_MODE=true
+WEBLOGIC_VERSION='10.3.6'
+ADMIN_SERVER='<%= @bpm_server_name %>'
+ADMIN_USER='weblogic'
+ADMIN_PASSWORD='welcome1'
+JAVA_HOME='<%= @java_home %>'
+SOA_REPOS_DBURL='jdbc:oracle:thin:@<%= @db_host %>:<%= @db_port %>/<%= @db_service %>'
+SOA_REPOS_DBUSER_PREFIX='<%= @db_schema_prefix %>'
+SOA_REPOS_DBPASSWORD='<%= @db_schema_password %>'
+BAM_ENABLED=<%= @bam_enabled %>
+
+def alterDatasource(datasource_name, schema_sufix):
+  cd('/JDBCSystemResource/' + datasource_name + '/JdbcResource/' + datasource_name + '/JDBCDriverParams/NO_NAME_0')
+  set('URL',SOA_REPOS_DBURL)
+  set('PasswordEncrypted',SOA_REPOS_DBPASSWORD)
+  cd('Properties/NO_NAME_0/Property/user')
+  set('Value',SOA_REPOS_DBUSER_PREFIX+'_'+schema_sufix)
+
+readTemplate('<%= @weblogic_home %>/common/templates/domains/wls.jar')
+
+cd('/Servers/AdminServer')
+set('Name',ADMIN_SERVER )
+cd('/Servers/'+ADMIN_SERVER)
+set('ListenAddress','localhost')
+set('ListenPort',<%= @bpm_server_port %>)
+
+setOption( "AppDir", APP_PATH )
+
+print('Set password...')
+cd('/')
+cd('Security/base_domain/User/weblogic')
+set('Name',ADMIN_USER)
+cmo.setPassword(ADMIN_PASSWORD)
+
+setOption('ServerStartMode', 'dev')
+setOption('JavaHome', JAVA_HOME)
+
+print('write domain...')
+writeDomain(DOMAIN_PATH)
+closeTemplate()
+
+readDomain(DOMAIN_PATH)
+
+cd('/')
+setOption( "AppDir", APP_PATH )
+
+print 'Adding SOA Template'
+addTemplate('<%= @oracle_common_home %>/common/templates/applications/oracle.wsmpm_template_11.1.1.jar')
+addTemplate('<%= @oracle_soa_home %>/common/templates/applications/oracle.soa_template_developer_11.1.1.jar')
+addTemplate('<%= @oracle_soa_home %>/common/templates/applications/oracle.bpm_template_developer_11.1.1.jar')
+addTemplate('<%= @oracle_common_home %>/common/templates/applications/oracle.em_11_1_1_0_0_template.jar')
+
+if BAM_ENABLED == true:
+  print 'Adding BAM Template'
+  addTemplate('<%= @oracle_soa_home %>/common/templates/applications/oracle.bam_template_11.1.1.jar')
+
+dumpStack();
+
+print 'Change datasources'
+alterDatasource('EDNDataSource', 'SOAINFRA')
+alterDatasource('EDNLocalTxDataSource', 'SOAINFRA')
+alterDatasource('OraSDPMDataSource', 'ORASDPM')
+alterDatasource('SOADataSource', 'SOAINFRA')
+alterDatasource('mds-soa', 'MDS')
+alterDatasource('mds-owsm', 'MDS')
+
+
+if BAM_ENABLED == true:
+  alterDatasource('BAMDataSource', 'ORABAM')
+  
+updateDomain()
+closeDomain();
+
+print('Exiting...')
+exit()
